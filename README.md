@@ -20,7 +20,7 @@ The best use case for the plugin is to get an overview of the connections betwee
 
 - Open your Obsidian vault on any page.
 
-- Click the InfraNodus Graph button (available at the top menu, left menu, and sidebar menu).
+- Click the InfraNodus Graph button (available at the top menu, left menu, and sidebar menu). You can also activate the plugin for any folder: just right-click on it and choose "InfraNodus graph".
 
 - InfraNodus will open a graph visualization of the page's content. The words and the [[wikilinks]] that you use are the nodes and their co-occurrences are the connections between them. Based on network science metrics, the nodes will be ranged by their importance (betweenness centrality) and aligned into groups (topical clusters), which will have the same color. Based on this representation, you can see what are the **most important** ideas and what **topical clusters** exist in your document.
 
