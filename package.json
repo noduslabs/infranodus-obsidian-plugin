@@ -1,0 +1,43 @@
+{
+	"name": "InfraNodus-Obsidian-Plugin",
+	"version": "0.6.0",
+	"description": "Advanced graph view for Obsidian: text analysis, topic modeling, and AI with https://infranodus.com",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "node esbuild.config.mjs",
+		"version": "node version-bump.mjs && git add manifest.json versions.json"
+	},
+	"keywords": [],
+	"author": "",
+	"devDependencies": {
+		"@types/dompurify": "^3.0.5",
+		"@types/node": "^16.11.6",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@typescript-eslint/eslint-plugin": "5.29.0",
+		"@typescript-eslint/parser": "5.29.0",
+		"autoprefixer": "^10.4.19",
+		"builtin-modules": "3.3.0",
+		"esbuild": "0.17.3",
+		"obsidian": "latest",
+		"postcss": "^8.4.38",
+		"tailwindcss": "^3.4.3",
+		"tslib": "2.4.0",
+		"typescript": "4.7.4"
+	},
+	"dependencies": {
+		"@primer/octicons-react": "^19.9.0",
+		"@tailwindcss/container-queries": "^0.1.1",
+		"dompurify": "^3.1.4",
+		"esbuild-postcss": "^0.0.4",
+		"https-proxy-agent": "^7.0.4",
+		"jwt-decode": "^4.0.0",
+		"lodash": "^4.17.21",
+		"markdown-to-txt": "^2.0.1",
+		"mixpanel": "^0.18.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"wink-lemmatizer": "^3.0.4"
+	}
+}
