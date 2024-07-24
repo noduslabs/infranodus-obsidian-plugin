@@ -1,7 +1,7 @@
 {
-	"id": "infranodus-obsidian",
+	"id": "infranodus-graph-view",
 	"name": "InfraNodus AI 3D Graph View",
-	"version": "0.5.0",
+	"version": "0.6.1",
 	"minAppVersion": "0.15.0",
 	"description": "Advanced graph view for Obsidian: text analysis, topic modeling, and AI.",
 	"author": "Nodus Labs",
