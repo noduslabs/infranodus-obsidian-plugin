@@ -4,6 +4,8 @@ Based on [InfraNodus](https://infranodus.com), this plugin visualizes the conten
 
 The built-in AI can be used to generate new ideas and research questions from your Obsidian content to bridge the gaps identified. Only [InfraNodus](https://infranodus.com) account is needed, OpenAI API GPT-4 use is included with the InfraNodus account, so you don't need your own OpenAI keys.
 
+<p>&nbsp;</p>
+
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
 <p>&nbsp;</p>
