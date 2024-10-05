@@ -24,7 +24,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ### Identify the main topical clusters and most important ideas
 
-– shows clusters of connected ideas using advanced network science modularity metrics (shown with the same color and aligned closer to each other on the graph)
+– clusters of connected form topics using text network analysis
 
 – highlights the most relevant concepts (shown bigger on the graph)
 
