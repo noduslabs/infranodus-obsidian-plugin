@@ -114,7 +114,7 @@ You can install the plugin from the Obsidian community plugins repository or man
 
 - Add your InfraNodus API key in the plugin's settings. It which can be found on [https://infranodus.com/subscription](https://infranodus.com/subscription) and you will need an InfraNodus account for that. If you don't have one, you can get a free trial and also use the special code for Obsidian users INFRANODUSOBSIDIAN2024 to get a lifetime 50% discont (limited availability). With the subscription, you can also use the. main version of [InfraNodus](https://infranodus.com), which can import data from multiple sources and has advance analytic capabilities. You will also get a browser extension.
 
-Note, that this product is subscription-based because it's the only way for me to finance this work and associated research which I've been doing for the last 10 years. We don't have any investors or external grants, so your contibution is what makes it possible.
+> Note, that this product is subscription-based because it's the only way for me to finance this work and associated research which I've been doing for the last 10 years. We don't have any investors or external grants, so your contibution is what makes it possible.
 
 <p>&nbsp;</p>
 
@@ -161,6 +161,18 @@ We do not save any data you send to InfraNodus servers via the Obsidian plugin t
 When you use some of the parts of the graph to generate AI content, we only send the underlying graph structure and some of the statements that relate to the parts of the graph you selected (not your whole document) to the OpenAI's API in order to get a response. OpenAI's terms of use state that they do not use data received via the API for training their models.
 
 While the plugin is in the beta stage we collect data about the features of the extension you use, so we can improve this plugin for you. We do not collect any information from your Obsidian vault.
+
+<p>&nbsp;</p>
+
+## Problems?
+
+If you have a problem using the plugin, you can open an issue in our [github repository](https://github.com/noduslabs/infranodus-obsidian-plugin/issues) or contact us via the [support portal](https://support.noduslabs.com) or [Discord channel](https://discord.gg/v4BWAvTfB9).
+
+Please, describe in detail what you've been trying to do and your system setup, so we can troubleshoot your issue quickly.
+
+Also, note, that Obsidian does not expose all the endpoints via their API, therefore some functionality may be unstable.
+
+Here are some most urgent feature requests for their team, that you can support with your comments: [contextual menus for bookmarks](https://forum.obsidian.md/t/expose-contextual-menus-for-bookmarks-natively/89408) and [expose search results via API](https://forum.obsidian.md/t/expose-search-result-snippets-via-the-api/89407)
 
 <p>&nbsp;</p>
 
