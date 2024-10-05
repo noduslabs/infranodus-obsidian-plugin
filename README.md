@@ -118,7 +118,7 @@ You can install the plugin from the Obsidian community plugins repository or man
 
 > #### Why do I have to pay after the free trial?
 >
-> Note, that this product is subscription-based because it's the only way for me to finance this work and the associated research which I've been doing for the last 10 years. I don't have any investors or external grants, so your contibution is the only resource what makes it possible. I believe that the value this tool can bring you is several times higher the subscription fee. If you don't think so, please, feel free to drop me a line and tell me how much you think it's worth and why.
+> Note, that this product is subscription-based because it's the only way for me to finance this work and the [associated research](https://infranodus.com/about/cognitive-variability) which I've been doing for the last 10 years. I don't have any investors or external grants, so your contibution is the only resource what makes it possible. I believe that the value this tool can bring you is several times higher the subscription fee. If you don't think so, please, feel free to drop me a line and tell me how much you think it's worth and why.
 
 <p>&nbsp;</p>
 
