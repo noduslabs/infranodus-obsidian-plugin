@@ -6,7 +6,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
-<p>&nbsp;</p>
+<p>&nbsp;<p>
 
 ## What Can this Plugin Do?
 
@@ -20,7 +20,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin page visualization](src/images/infranodus-obsidian-graph-view-page-visualization.jpg)
 
-<p>&nbsp;</p>
+<p>&nbsp;<p>
 
 ### Identify the main topical clusters and most important ideas
 
