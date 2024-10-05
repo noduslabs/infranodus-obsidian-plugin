@@ -12,7 +12,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ## What Can this Plugin Do?
 
-### Visualize the main ideas on any page:
+### 1. Visualize the main ideas on any page:
 
 - take both mentions [[wiki-links]] and concepts into account (can be adjusted)
 
@@ -24,7 +24,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 <p>&nbsp;</p>
 
-### Identify the main topics and most important ideas
+### 2. Identify the main topics and most important ideas
 
 Use advanced network science algorithms to:
 
@@ -38,49 +38,7 @@ Use advanced network science algorithms to:
 
 <p>&nbsp;</p>
 
-### Include the backlinks and unlinked mentions into analysis
-
-To help you find hidden connections between your ideas, you can:
-
-- include the snippets from backlink mentions into analysis (adjustable)
-
-- include unmentioned snippets into analysis
-
-![InfraNodus Obsidian backlinks analysis](src/images/infranodus-obsidian-plugin.png)
-
-<p>&nbsp;</p>
-
-### Visualize from any content view
-
-No other graph view plugin offers so many visualization options. You can extract the content to visualize from:
-
-- a single file
-- selected files
-- vault folders
-- search result snippets
-- pages found in the search results
-- bookmark folders
-
-![InfraNodus Obsidian search results visualization](src/images/infranodus-obsidian-search-results.jpg)
-
-<p>&nbsp;</p>
-
-### Obtain advanced network science metrics on your graph
-
-\*This plugin has the most comprehensive graph analytics of any Obsidian plugin, including:
-
-- betweenness centrality (bc)
-- relative influence
-- graph's modularity
-- concept's relevanve (bc + degree)
-- main relations (bigrams)
-- graphDot structure for further analysis
-
-![InfraNodus graph analytics](src/images/infranodus-obsidian-with-stats.jpg)
-
-<p>&nbsp;</p>
-
-### Identify gaps and generate new ideas using the built-in AI
+### 3. Identify gaps and generate new ideas using the built-in AI
 
 To help you generate new ideas, you can run the built-in AI on:
 
@@ -96,7 +54,49 @@ To help you generate new ideas, you can run the built-in AI on:
 
 <p>&nbsp;</p>
 
-### Navigate through your vault using the graph
+### 4. Include the backlinks and unlinked mentions into analysis
+
+To help you find hidden connections between your ideas, you can:
+
+- include the snippets from backlink mentions into analysis (adjustable)
+
+- include unmentioned snippets into analysis
+
+![InfraNodus Obsidian backlinks analysis](src/images/infranodus-obsidian-plugin.png)
+
+<p>&nbsp;</p>
+
+### 5. Visualize from any content view
+
+No other graph view plugin offers so many visualization options. You can extract the content to visualize from:
+
+- a single file
+- selected files
+- vault folders
+- search result snippets
+- pages found in the search results
+- bookmark folders
+
+![InfraNodus Obsidian search results visualization](src/images/infranodus-obsidian-search-results.jpg)
+
+<p>&nbsp;</p>
+
+### 6. Obtain advanced network science metrics on your graph
+
+\*This plugin has the most comprehensive graph analytics of any Obsidian plugin, including:
+
+- betweenness centrality (bc)
+- relative influence
+- graph's modularity
+- concept's relevanve (bc + degree)
+- main relations (bigrams)
+- graphDot structure for further analysis
+
+![InfraNodus graph analytics](src/images/infranodus-obsidian-with-stats.jpg)
+
+<p>&nbsp;</p>
+
+### 7. Navigate through your vault using the graph
 
 You can navigate between pages using the arrow button
 
@@ -116,7 +116,9 @@ You can install the plugin from the Obsidian community plugins repository or man
 
 - Add your InfraNodus API key in the plugin's settings. It which can be found on [https://infranodus.com/subscription](https://infranodus.com/subscription) and you will need an InfraNodus account for that. If you don't have one, you can get a free trial and also use the special code for Obsidian users INFRANODUSOBSIDIAN2024 to get a lifetime 50% discont (limited availability). With the subscription, you can also use the. main version of [InfraNodus](https://infranodus.com), which can import data from multiple sources and has advance analytic capabilities. You will also get a browser extension.
 
-> Note, that this product is subscription-based because it's the only way for me to finance this work and associated research which I've been doing for the last 10 years. We don't have any investors or external grants, so your contibution is what makes it possible.
+> #### Why do I have to pay after the free trial?
+>
+> Note, that this product is subscription-based because it's the only way for me to finance this work and the associated research which I've been doing for the last 10 years. I don't have any investors or external grants, so your contibution is the only resource what makes it possible. I believe that the value this tool can bring you is several times higher the subscription fee. If you don't think so, please, feel free to drop me a line and tell me how much you think it's worth and why.
 
 <p>&nbsp;</p>
 
