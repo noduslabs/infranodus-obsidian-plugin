@@ -6,7 +6,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
-<p>&nbsp;<p>
+<p>&nbsp;</p>
 
 ## What Can this Plugin Do?
 
@@ -46,7 +46,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian backlinks analysis](src/images/infranodus-obsidian-plugin.png)
 
-<p>&nbsp;<p>
+<p>&nbsp;</p>
 
 ### Obtain advanced network science metrics on your graph:
 
@@ -73,7 +73,7 @@ To help you generate new ideas, you can run the built-in AI on:
 
 is an advanced visual text analysis tool with AI capabilities. It can be used to import and analyze any web content, PDF files, spreadsheets, and identify the main topics, ideas, and gaps between them. The built-in GPT-4 AI will help connect ideas, generate summaries and research questions from the content.
 
-<p>&nbsp;<p>
+<p>&nbsp;</p>
 
 ## Installation Instructions
 
