@@ -2,13 +2,10 @@
 
 [InfraNodus](https://infranodus.com) is an advanced visual text analysis tool with AI capabilities. It can be used to import and analyze any web content, PDF files, spreadsheets, and identify the main topics, ideas, and gaps between them. The built-in GPT-4 AI will help connect ideas, generate summaries and research questions from the content.
 
-![InfraNodus Obsidian plugin screenshot](src/images/infranodus-obsidian-plugin.png)
-
-## How Does It Work?
-
-This plugin visualizes the content of Obsidian vaults as a knowledge graph, retrieving the main topical clusters, most important ideas, and helping identify the gaps between them. The built-in AI can be used to generate new ideas and research questions from your Obsidian content. Only [InfraNodus](https://infranodus.com) account is needed, OpenAI API GPT-4 use is included with InfraNodus account, so you don't need your own OpenAI keys.
-
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
+
+<p>&nbsp;<p>
+This plugin visualizes the content of Obsidian vaults as a knowledge graph, retrieving the main topical clusters, most important ideas, and helping identify the gaps between them. The built-in AI can be used to generate new ideas and research questions from your Obsidian content. Only [InfraNodus](https://infranodus.com) account is needed, OpenAI API GPT-4 use is included with InfraNodus account, so you don't need your own OpenAI keys.
 
 ## Installation Instructions
 
