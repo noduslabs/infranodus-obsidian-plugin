@@ -126,35 +126,119 @@ You can install the plugin from the Obsidian community plugins repository or man
 
 The best use case for the plugin is to get an overview of the connections between your ideas and to find the gaps between different topics. Here's how you can do that:
 
-- Open your Obsidian vault on any page.
+<p>&nbsp;</p>
 
-- Open the sidebar of Your Obsidian. The graph will appear there automatically.
+### 1. Open any page in Obsidian
 
-- If you prefer, you can also initiate the plugin by clicking the InfraNodus Graph button (available at the top panel of the page or in the page's contextual menu). You can also activate the plugin for any folder: just right-click on it and choose "InfraNodus graph".
+- Open your Obsidian vault on any page
 
-- You can also use the plugin on search results and bookmarks. This is very useful when you want to analyze the search snippets / pages or if you need to analyze files that are not in a folder. Just add them to a bookmark group, then go to Bookmarks, select the files, right-click and analyze using the contextual menu. Your Core Bookmarks plugin has to be activated.
+- Navigate to that page and click the InfraNodus graph button at the top
 
-- Once activated, InfraNodus will open a graph visualization of the page's content. The words and the [[wikilinks]] that you use are the nodes and their co-occurrences inside the text (or links between them if you're analyzing several pages) are the connections between them. (E.g.: if you mention [[philosophy]] and [[deconstruction]] in the same context, they will show up as connected — you can change that in settings).
+– You can also right-click on the page's contextual menu and open the plugin from there
+
+### 2. Move the plugin to the sidebar
+
+- For best experience, we recommend moving the plugin to your Obsidian's sidebar like this:
+
+![Move Obsidian plugin to sidebar](src/images/infranodus-obsidian-move-sidebar.gif)
+
+<p>&nbsp;</p>
+
+### 3. Try different activation options
+
+You can activate the plugin in several ways for different views:
+
+- The InfraNodus icon on the top of the page or use the page's contextual menu (right-click)
+
+- File explorer / vault folder: just right-click on it and choose "InfraNodus Graph"
+
+- Selected files: select the files, right click, choose "InfraNodus Graph"
+
+- Main menu icon (on the left) — will visualize the nearest vault folder to the page currently selected
+
+- Search result snippets (use the ... button next to search result count) — *experimental*
+
+- Search result pages (use the ... button, choose the pages to analyze all the pages found)
+
+- Bookmark groups: select the groups, right-click and analyze using the contextual menu. _Your Core Bookmarks plugin has to be activated._
+
+- Bookmarks: select the files, right-click and analyze using the contextual menu. _Your Core Bookmarks plugin has to be activated._ (experimental)
+
+<p>&nbsp;</p>
+
+### 4. Read the graph
+
+- Once activated, InfraNodus will open a graph visualization of the page's content.
+
+- The words and the [[wikilinks]] that you use are the nodes and their co-occurrences inside the text (or links between them if you're analyzing several pages) are the connections between them. (E.g.: if you mention [[philosophy]] and [[deconstruction]] in the same context, they will show up as connected — you can change that in settings).
 
 - Based on network science metrics, the nodes will be ranged by their importance (betweenness centrality) and aligned into groups (topical clusters), which will have the same color. Based on this representation, you can see what are the **most important** ideas and what **topical clusters** exist in your document.
 
-- To learn more about the science behind the tool, please, check the [InfraNodus - How it Works](https://infranodus.com/about/how-it-works) page as well as the the peer-reviewed [InfraNodus Whitepaper](https://dl.acm.org/doi/10.1145/3308558.3314123).
+- We use force-atlas layout to align the nodes that are more densely connected closer to each other on the graph
+
+> To learn more about the science behind the tool, please, check the [InfraNodus - How it Works (https://infranodus.com/about/how-it-works) page as well as the the peer-reviewed [InfraNodus Whitepaper](https://dl.acm.org/doi/10.1145/3308558.3314123).
 
 - Use the graph visualization to get an overview of what the text is about and see if anything is missing.
+
+<p>&nbsp;</p>
+
+### 5. Explore the main topics, find the context, generate AI summaries
 
 - Click on the "Topics" to see the main topics present in the document. You can use the built-in GPT-4 AI to generate a summary of the document in "Topics" > "Summary".
 
 - Click on the terms that seem relevant to you and then click on the "Concepts" > "Context" button to see the context where these terms appear in the document (the actual statement). You can also navigate directly to that statement in Obsidian and visualize a new graph of the document where the statement is contained.
 
+<p>&nbsp;</p>
+
+### 6. Identify the gaps and use the AI to generate new ideas
+
 - Most interesting feature: click on the "Gaps" and see the blind holes identified in your content. These are the clusters of ideas that could be better connected. Use the built-in AI to generate interesting research questions that will help you develop the ideas in your notes further.
+
+<p>&nbsp;</p>
+
+### 7. Reveal non-obvious layer of underlying ideas
 
 - Remove the top nodes from the graph (select > hide) to reveal underlying ideas and latent topics that are not visible on the surface.
 
-- Reiterate.
+<p>&nbsp;</p>
+
+### 8. Reiterate
 
 - If you find a concept or topic you like, you can also use InfraNodus to **navigate** to that page. Just click the node in the graph and then click the arrow above to proceed to that page.
 
+### 9. Save and export ideas
+
 - Feel free to export the most interesting excerpts and AI-generated ideas to InfraNodus for later reference and analysis.
+
+<p>&nbsp;</p>
+
+## Settings
+
+Here is a brief expalanation of the InfraNodus settings:
+
+**InfraNodus API Key** - connects your plugin to your InfraNodus account
+
+**AI model** — AI model to use (we like GPT-4 the most, but you can use GPT-4o-mini and such)
+
+**Single page processing** — How to process the content on the single pages. We recommend [[wiki links]] and concepts so you can see all possible connections.
+
+**Multi page processing** — How to process the content when multiple pages are analyzed. We recommend [[wiki links]] only so you can visualize the mentions only.
+
+**Include linked / unlinked mentions** — shall we include the snippets shown in the backlinks / unlinked mentions to the analysis?
+
+**Improve unliked search** — shall we do an aggressive search for any mention (finds more stuff than Obsidian's default one)
+
+**Updating graph** — should we update the graph every time you change it (Automatic) or only when you press a button
+
+**Default graph layer** — which graph layer to show by default? We like "Topics" for novice users, but for advanced users or mobile screens you might want to choose "Graph", so you give more space to the graph
+
+**Export type** - you can export the data you're currently analyzing using the Export button (4th from the top in the left-side menu). You have two options: copying and pasting the content (requires your confirmation, doesn't work for big pages) or saving it automatically via our API (faster, in this case, it'll be saved into the graph selected in the next setting)
+
+**Export to graph name** - how the name of your export graph is generated (you can choose "obsidian_files" to save everything to one graph — that works better if you're only saving AI ideas and content snippets)
+
+**Graph name** — where to save AI insights when you export them
+
+**When using locate** — what to do when you click "Locate statement" or "find in context" — should we open the edit mode (works beter) or leave it as it is.
 
 <p>&nbsp;</p>
 
@@ -168,7 +252,7 @@ While the plugin is in the beta stage we collect data about the features of the 
 
 <p>&nbsp;</p>
 
-## Problems?
+## Problems? Questions?
 
 If you have a problem using the plugin, you can open an issue in our [github repository](https://github.com/noduslabs/infranodus-obsidian-plugin/issues) or contact us via the [support portal](https://support.noduslabs.com) or [Discord channel](https://discord.gg/v4BWAvTfB9).
 
