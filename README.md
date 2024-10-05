@@ -6,43 +6,64 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
+<p>&nbsp;</p>
+
 ## What Can this Plugin Do?
 
 ### Visualize the main ideas on any page:
 
-- takes both mentions [[wiki-links]] and concepts into account (can be adjusted)
+- take both mentions [[wiki-links]] and concepts into account (can be adjusted)
 
-- uses advanced clustering algorithms and a beautiful 3D visualization module
+- use advanced clustering algorithms and a beautiful 3D visualization module
 
-- shows connections between ideas inside your text
+- show connections between ideas inside your text
 
 ![InfraNodus Obsidian plugin page visualization](src/images/infranodus-obsidian-graph-view-page-visualization.jpg)
 
-### Identify the main topical clusters and most important ideas:
+<p>&nbsp;</p>
 
-– clusters of connected form topics using text network analysis
+### Identify the main topics and most important ideas
 
-– highlights the most relevant concepts (shown bigger on the graph)
+Use advanced network science algorithms to:
 
-- can locate original content that belongs to the topics identified
+- detect clusters of concepts that appear together
+
+- highlight the most relevant concepts (shown bigger on the graph)
+
+- locate original content that belongs to the topics identified
 
 ![InfraNodus plugin view topics](src/images/infranodus-obsidian-graph-view-topics.jpg)
 
-### Visualize
+<p>&nbsp;</p>
 
-- single pages
-- folders
-- search result snippets
-- pages found in search results
-- bookmark folders
+### Include the backlinks and unlinked mentions into analysis
 
-### Include the backlinks and unlinked mentions into analysis:
+To help you find hidden connections between your ideas, you can:
+
+- include the snippets from backlink mentions into analysis (adjustable)
+
+- include unmentioned snippets into analysis
 
 ![InfraNodus Obsidian backlinks analysis](src/images/infranodus-obsidian-plugin.png)
 
 <p>&nbsp;</p>
 
-### Obtain advanced network science metrics on your graph:
+### Visualize from any content view
+
+No other graph view plugin offers so many visualization options. You can extract the content to visualize from:
+
+- a single file
+- selected files
+- vault folders
+- search result snippets
+- pages found in the search results
+- bookmark folders
+
+![InfraNodus Obsidian search results visualization](src/images/infranodus-obsidian-search-results.jpg)
+
+<p>&nbsp;</p>
+
+### Obtain advanced network science metrics on your graph
 
 \*This plugin has the most comprehensive graph analytics of any Obsidian plugin, including:
 
@@ -53,7 +74,11 @@ The built-in AI can be used to generate new ideas and research questions from yo
 - main relations (bigrams)
 - graphDot structure for further analysis
 
-### Use buit-in AI capabilities
+![InfraNodus graph analytics](src/images/infranodus-obsidian-with-stats.jpg)
+
+<p>&nbsp;</p>
+
+### Identify gaps and generate new ideas using the built-in AI
 
 To help you generate new ideas, you can run the built-in AI on:
 
@@ -65,7 +90,15 @@ To help you generate new ideas, you can run the built-in AI on:
 - trends
 - using the built-in AI chat
 
-is an advanced visual text analysis tool with AI capabilities. It can be used to import and analyze any web content, PDF files, spreadsheets, and identify the main topics, ideas, and gaps between them. The built-in GPT-4 AI will help connect ideas, generate summaries and research questions from the content.
+![InfraNodus Obsidian graph view plugin AI generation ideas](src/images/infranodus-obsidian-idea-gap.jpg)
+
+<p>&nbsp;</p>
+
+### Navigate through your vault using the graph
+
+You can navigate between pages using the arrow button
+
+![InfraNodus Obsidian graph view plugin](src/images/infranodus-obsidian-navigate.gif)
 
 <p>&nbsp;</p>
 
@@ -82,6 +115,8 @@ You can install the plugin from the Obsidian community plugins repository or man
 - Add your InfraNodus API key in the plugin's settings. It which can be found on [https://infranodus.com/subscription](https://infranodus.com/subscription) and you will need an InfraNodus account for that. If you don't have one, you can get a free trial and also use the special code for Obsidian users INFRANODUSOBSIDIAN2024 to get a lifetime 50% discont (limited availability). With the subscription, you can also use the. main version of [InfraNodus](https://infranodus.com), which can import data from multiple sources and has advance analytic capabilities. You will also get a browser extension.
 
 Note, that this product is subscription-based because it's the only way for me to finance this work and associated research which I've been doing for the last 10 years. We don't have any investors or external grants, so your contibution is what makes it possible.
+
+<p>&nbsp;</p>
 
 ## User's Manual
 
@@ -117,6 +152,8 @@ The best use case for the plugin is to get an overview of the connections betwee
 
 - Feel free to export the most interesting excerpts and AI-generated ideas to InfraNodus for later reference and analysis.
 
+<p>&nbsp;</p>
+
 ## Data Privacy
 
 We do not save any data you send to InfraNodus servers via the Obsidian plugin to keep your privacy intact — not even in the logs. Our servers simply convert the text you choose to visualize into a JSON graph and send it back to the plugin along with important metrics for visualization.
@@ -124,6 +161,8 @@ We do not save any data you send to InfraNodus servers via the Obsidian plugin t
 When you use some of the parts of the graph to generate AI content, we only send the underlying graph structure and some of the statements that relate to the parts of the graph you selected (not your whole document) to the OpenAI's API in order to get a response. OpenAI's terms of use state that they do not use data received via the API for training their models.
 
 While the plugin is in the beta stage we collect data about the features of the extension you use, so we can improve this plugin for you. We do not collect any information from your Obsidian vault.
+
+<p>&nbsp;</p>
 
 ## More Information
 
@@ -134,6 +173,8 @@ Also, please, check our support portal on [https://support.noduslabs.com](https:
 You can contact us directly via the support portal above or via our [Discord channel](https://discord.gg/v4BWAvTfB9).
 
 We also invite you to subscribe to the [Nodus Labs YouTube channel](https://youtube.com/@noduslabs), [Instagram](https://instagram.com/infranodus), and [Twitter](https://twitter.com/infranodus) where you can learn more about the various exciting use cases for the plugin.
+
+<p>&nbsp;</p>
 
 ## Legal Information
 
