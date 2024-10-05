@@ -10,7 +10,31 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ## What Can this Plugin Do?
 
-### Visualize the content of any page (both concepts and [[wiki-links]]), including:
+### Visualize the main ideas on any page:
+
+- takes both mentions [[wiki-links]] and concepts into account (can be adjusted)
+
+- uses advanced clustering algorithms and a beautiful 3D visualization module
+
+- shows connections between ideas inside your text
+
+![InfraNodus Obsidian plugin page visualization](src/images/infranodus-obsidian-graph-view-page-visualization.jpg)
+
+<p>&nbsp;</p>
+
+### Identify the main topical clusters and most important ideas
+
+– shows clusters of connected ideas using advanced network science modularity metrics (shown with the same color and aligned closer to each other on the graph)
+
+– highlights the most relevant concepts (shown bigger on the graph)
+
+- can locate original content that belongs to the topics identified
+
+![InfraNodus plugin view topics](src/images/infranodus-obsidian-graph-view-topics.jpg)
+
+<p>&nbsp;</p>
+
+### Visualize
 
 - single pages
 - folders
@@ -23,8 +47,6 @@ The built-in AI can be used to generate new ideas and research questions from yo
 ![InfraNodus Obsidian backlinks analysis](src/images/infranodus-obsidian-plugin.png)
 
 <p>&nbsp;<p>
-
-### Identify the main topics and clusters of ideas
 
 ### Obtain advanced network science metrics on your graph:
 
@@ -79,7 +101,9 @@ The best use case for the plugin is to get an overview of the connections betwee
 
 - You can also use the plugin on search results and bookmarks. This is very useful when you want to analyze the search snippets / pages or if you need to analyze files that are not in a folder. Just add them to a bookmark group, then go to Bookmarks, select the files, right-click and analyze using the contextual menu. Your Core Bookmarks plugin has to be activated.
 
-- Once activated, InfraNodus will open a graph visualization of the page's content. The words and the [[wikilinks]] that you use are the nodes and their co-occurrences are the connections between them. Based on network science metrics, the nodes will be ranged by their importance (betweenness centrality) and aligned into groups (topical clusters), which will have the same color. Based on this representation, you can see what are the **most important** ideas and what **topical clusters** exist in your document.
+- Once activated, InfraNodus will open a graph visualization of the page's content. The words and the [[wikilinks]] that you use are the nodes and their co-occurrences inside the text (or links between them if you're analyzing several pages) are the connections between them. (E.g.: if you mention [[philosophy]] and [[deconstruction]] in the same context, they will show up as connected — you can change that in settings).
+
+- Based on network science metrics, the nodes will be ranged by their importance (betweenness centrality) and aligned into groups (topical clusters), which will have the same color. Based on this representation, you can see what are the **most important** ideas and what **topical clusters** exist in your document.
 
 - To learn more about the science behind the tool, please, check the [InfraNodus - How it Works](https://infranodus.com/about/how-it-works) page as well as the the peer-reviewed [InfraNodus Whitepaper](https://dl.acm.org/doi/10.1145/3308558.3314123).
 
