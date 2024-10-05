@@ -6,8 +6,6 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
-<p>&nbsp;<p>
-
 ## What Can this Plugin Do?
 
 ### Visualize the main ideas on any page:
@@ -20,9 +18,7 @@ The built-in AI can be used to generate new ideas and research questions from yo
 
 ![InfraNodus Obsidian plugin page visualization](src/images/infranodus-obsidian-graph-view-page-visualization.jpg)
 
-<p>&nbsp;<p>
-
-### Identify the main topical clusters and most important ideas
+### Identify the main topical clusters and most important ideas:
 
 – clusters of connected form topics using text network analysis
 
@@ -31,8 +27,6 @@ The built-in AI can be used to generate new ideas and research questions from yo
 - can locate original content that belongs to the topics identified
 
 ![InfraNodus plugin view topics](src/images/infranodus-obsidian-graph-view-topics.jpg)
-
-<p>&nbsp;</p>
 
 ### Visualize
 
