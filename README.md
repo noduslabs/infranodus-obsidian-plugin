@@ -136,6 +136,8 @@ The best use case for the plugin is to get an overview of the connections betwee
 
 – You can also right-click on the page's contextual menu and open the plugin from there
 
+<p>&nbsp;</p>
+
 ### 2. Move the plugin to the sidebar
 
 - For best experience, we recommend moving the plugin to your Obsidian's sidebar like this:
@@ -205,6 +207,8 @@ You can activate the plugin in several ways for different views:
 ### 8. Reiterate
 
 - If you find a concept or topic you like, you can also use InfraNodus to **navigate** to that page. Just click the node in the graph and then click the arrow above to proceed to that page.
+
+<p>&nbsp;</p>
 
 ### 9. Save and export ideas
 
