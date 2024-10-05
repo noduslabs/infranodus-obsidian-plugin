@@ -1,8 +1,8 @@
 # InfraNodus Advanced Graph View Plugin for Obsidian
 
-Based on [InfraNodus](https://infranodus.com), this plugin visualizes the content of Obsidian vaults as a knowledge graph, retrieving the main topical clusters, most important ideas, and helping identify the gaps between them.
+Based on [InfraNodus](https://infranodus.com), this plugin visualizes the content of Obsidian vaults as a knowledge graph, retrieves the main topical clusters, most important ideas, and identifies the gaps between them.
 
-The built-in AI can be used to generate new ideas and research questions from your Obsidian content. Only [InfraNodus](https://infranodus.com) account is needed, OpenAI API GPT-4 use is included with InfraNodus account, so you don't need your own OpenAI keys.
+The built-in AI can be used to generate new ideas and research questions from your Obsidian content to bridge the gaps identified. Only [InfraNodus](https://infranodus.com) account is needed, OpenAI API GPT-4 use is included with the InfraNodus account, so you don't need your own OpenAI keys.
 
 ![InfraNodus Obsidian plugin visualization](src/images/infranodus-obsidian-plugin-pages.gif)
 
