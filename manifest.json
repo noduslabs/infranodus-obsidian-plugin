@@ -1,7 +1,7 @@
 {
 	"id": "infranodus-graph-view",
 	"name": "InfraNodus AI Graph View",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"minAppVersion": "0.15.0",
 	"description": "Interactive 3D graph view: text analysis, topic modeling, gap detection, and AI.",
 	"author": "Nodus Labs",

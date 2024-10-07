@@ -32371,7 +32371,7 @@ var InfraNodusSettingTab = class extends import_obsidian.PluginSettingTab {
       const key = "INCLUDE_UNLINKED_MENTIONS";
       dropdown.addOption("For empty pages only", "For empty pages only").addOption("For all pages", "For all pages").addOption("Never", "Never").setValue(SETTINGS[key]).onChange(async (value) => onChange(key, value));
     });
-    new import_obsidian.Setting(containerEl).setName("Improve Unlinked Search").setDesc(
+    new import_obsidian.Setting(containerEl).setName("Improve unlinked search").setDesc(
       "Count a text match to a page's name as an unlinked mention.."
     ).addDropdown((dropdown) => {
       const key = "USE_OWN_UNLINKED_SEARCH";
@@ -32515,7 +32515,7 @@ var InfraNodus = class {
     if (params.contextSettings === "[[Wiki Links]] and Concepts") {
       body.contextSettings = {
         partOfSpeechToProcess: "HASHTAGS_AND_WORDS",
-        doubleSquarebracketsProcessing: "PROCESS_AS_MENTIONS",
+        doubleSquarebracketsProcessing: "PROCESS_AS_HASHTAGS",
         mentionsProcessing: "CONNECT_TO_ALL_CONCEPTS"
       };
     }
@@ -32540,6 +32540,7 @@ var InfraNodus = class {
     if (params.stopwords && params.stopwords.length > 0) {
       body.contextSettings = {
         ...body.contextSettings,
+        lemmatizeHashtags: true,
         stopwords: params.stopwords
       };
     }
@@ -33210,7 +33211,7 @@ async function generateAiAdvice(params) {
     promptGraph: prompt.promptGraph,
     promptContext: params.adviceMode != "summary" && params.beyondContext ? "" : prompt.promptContext,
     type: params.adviceMode,
-    language: "en",
+    language: "USER",
     source: params.adviceMode,
     modal: params.modal
   };
@@ -35599,7 +35600,7 @@ var GraphViewOverlaySettings = (params) => {
       ]
     },
     {
-      name: "Improve Unlinked Search",
+      name: "Improve unlinked search",
       key: "USE_OWN_UNLINKED_SEARCH",
       description: "Count a text match to a page's name as an unlinked mention.",
       value: "",
@@ -36197,7 +36198,7 @@ var GraphView = (params) => {
         const aiTopics = await InfraNodus.generateAiNamesForTopics({
           graph_data: graphData2,
           top_clusters: (_b2 = extractedGraphDataRef.current) == null ? void 0 : _b2.top_clusters,
-          language: "en"
+          language: "USER"
         });
         sendDataToIframe("TOPICS_UPDATE" /* TOPICS_UPDATE */, aiTopics);
         for (const aiTopic of aiTopics) {
