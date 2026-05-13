@@ -61,15 +61,20 @@ When you push a tag matching `x.x.x` (e.g. `0.9.10`), the workflow:
 2. Builds the plugin (`npm run build`) to produce `main.js` and `styles.css`.
 3. Reads `name` and `description` from `manifest.json`.
 4. Creates a GitHub release with:
-   - **Title:** `<plugin name> <version>` — e.g. `InfraNodus AI Graph View 0.9.10`
-   - **Body:** the plugin description followed by auto-generated notes (commits / PRs since the previous tag).
-   - **Assets:** `main.js`, `manifest.json`, `styles.css` attached for Obsidian to download.
+    - **Title:** `<plugin name> <version>` — e.g. `InfraNodus AI Graph View 0.9.10`
+    - **Body:** the plugin description followed by auto-generated notes (commits / PRs since the previous tag).
+    - **Assets:** `main.js`, `manifest.json`, `styles.css` attached for Obsidian to download.
 
 It uses the built-in `GITHUB_TOKEN` — no secrets to configure.
 
 ### Release flow
 
 After committing your changes:
+
+```
+# 0. Run the build
+npm run build
+```
 
 ```
 # 1. Bump the version (updates manifest.json, package.json, versions.json via version-bump.mjs)
