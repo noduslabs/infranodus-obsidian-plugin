@@ -1,6 +1,6 @@
 {
 	"name": "InfraNodus-Obsidian-Plugin",
-	"version": "0.9.9",
+	"version": "0.9.10",
 	"description": "Advanced graph view for Obsidian: text analysis, topic modeling, and AI with https://infranodus.com",
 	"main": "main.js",
 	"scripts": {
