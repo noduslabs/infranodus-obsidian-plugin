@@ -38,7 +38,7 @@ const InfoTooltip = React.forwardRef<HTMLDivElement, InfoTooltipProps>(
 			div.style.opacity = "0";
 			div.style.maxWidth = "250px";
 
-			div.innerHTML = text;
+			div.textContent = text;
 			document.body.appendChild(div);
 			tooltipRef.current = div;
 		}, [children]);
