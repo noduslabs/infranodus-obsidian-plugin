@@ -48,3 +48,43 @@ git push origin 0.9.6
 ```
 
 6. Create new version release in the repo: `https://github.com/noduslabs/infranodus-obsidian-plugin/releases`
+
+## Automatic Release
+
+A GitHub Actions workflow at `.github/workflows/release.yml` turns a pushed version tag into a fully built GitHub release — no manual upload of `main.js` / `styles.css` / `manifest.json` needed.
+
+### What it does
+
+When you push a tag matching `x.x.x` (e.g. `0.9.10`), the workflow:
+
+1. Checks out the repo and installs dependencies (`npm ci`).
+2. Builds the plugin (`npm run build`) to produce `main.js` and `styles.css`.
+3. Reads `name` and `description` from `manifest.json`.
+4. Creates a GitHub release with:
+   - **Title:** `<plugin name> <version>` — e.g. `InfraNodus AI Graph View 0.9.10`
+   - **Body:** the plugin description followed by auto-generated notes (commits / PRs since the previous tag).
+   - **Assets:** `main.js`, `manifest.json`, `styles.css` attached for Obsidian to download.
+
+It uses the built-in `GITHUB_TOKEN` — no secrets to configure.
+
+### Release flow
+
+After committing your changes:
+
+```
+# 1. Bump the version (updates manifest.json, package.json, versions.json via version-bump.mjs)
+npm version 0.9.10
+
+# 2. Tag and push
+git tag 0.9.10
+git push origin master
+git push origin 0.9.10
+```
+
+The workflow runs on the tag push. Watch it at `https://github.com/noduslabs/infranodus-obsidian-plugin/actions`. When it finishes, the release appears at `https://github.com/noduslabs/infranodus-obsidian-plugin/releases`.
+
+### Notes
+
+- **Tag format must be `x.x.x`** (no `v` prefix). Obsidian's community-plugin pipeline expects the tag to match the `version` field in `manifest.json` exactly.
+- A non-matching tag (e.g. `wip-2026-05-13`) is ignored by the workflow — useful for internal checkpoints that should not produce a release.
+- If a release fails, fix the issue, delete the tag locally (`git tag -d 0.9.10`) and remotely (`git push --delete origin 0.9.10`), then re-tag and push.
