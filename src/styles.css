@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Markdown content rendered inside chat bubbles and AI dialogue */
+.infranodus-markdown {
+	font-weight: 400;
+}
+.infranodus-markdown > *:first-child {
+	margin-top: 0;
+}
+.infranodus-markdown > *:last-child {
+	margin-bottom: 0;
+}
+.infranodus-markdown p {
+	margin: 0 0 0.5em 0;
+	font-weight: inherit;
+	white-space: pre-wrap;
+}
+.infranodus-markdown strong,
+.infranodus-markdown b,
+.infranodus-markdown strong *,
+.infranodus-markdown b * {
+	font-weight: 800 !important;
+}
+.infranodus-markdown em,
+.infranodus-markdown i {
+	font-style: italic !important;
+}
+.infranodus-markdown h1,
+.infranodus-markdown h2,
+.infranodus-markdown h3,
+.infranodus-markdown h4,
+.infranodus-markdown h5,
+.infranodus-markdown h6 {
+	font-weight: 800 !important;
+	margin: 0.5em 0 0.25em 0;
+	line-height: 1.25;
+}
+.infranodus-markdown h1 { font-size: 1.25em; }
+.infranodus-markdown h2 { font-size: 1.15em; }
+.infranodus-markdown h3 { font-size: 1.05em; }
+.infranodus-markdown h4,
+.infranodus-markdown h5,
+.infranodus-markdown h6 { font-size: 1em; }
+.infranodus-markdown ul,
+.infranodus-markdown ol {
+	margin: 0.25em 0 0.5em 0;
+	padding-left: 1.25em;
+}
+.infranodus-markdown ul li { list-style: disc; }
+.infranodus-markdown ol li { list-style: decimal; }
+.infranodus-markdown li { margin: 0.15em 0; }
+.infranodus-markdown li > p { margin: 0; }
+.infranodus-markdown a {
+	color: rgb(99, 102, 241);
+	text-decoration: underline;
+}
+.infranodus-markdown code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.9em;
+	background: rgba(127, 127, 127, 0.18);
+	padding: 0.1em 0.3em;
+	border-radius: 3px;
+}
+.infranodus-markdown pre {
+	background: rgba(127, 127, 127, 0.18);
+	padding: 0.5em 0.75em;
+	border-radius: 4px;
+	overflow-x: auto;
+	margin: 0.4em 0;
+}
+.infranodus-markdown pre > code {
+	background: transparent;
+	padding: 0;
+	border-radius: 0;
+}
+.infranodus-markdown blockquote {
+	border-left: 3px solid rgba(127, 127, 127, 0.4);
+	padding-left: 0.6em;
+	margin: 0.4em 0;
+	color: inherit;
+	opacity: 0.85;
+}
+.infranodus-markdown hr {
+	border: 0;
+	border-top: 1px solid rgba(127, 127, 127, 0.35);
+	margin: 0.6em 0;
+}
+.infranodus-markdown table {
+	border-collapse: collapse;
+	margin: 0.4em 0;
+}
+.infranodus-markdown th,
+.infranodus-markdown td {
+	border: 1px solid rgba(127, 127, 127, 0.4);
+	padding: 0.2em 0.4em;
+}
