@@ -363,9 +363,9 @@ export class InfraNodusGraphView extends ItemView {
 			this.root.render(React.createElement(EmptyGraphView, {}));
 		}
 
-		const styleEl = shadowRoot.createEl("style");
-		styleEl.textContent = `/* INJECTED_CSS */`;
-		shadowRoot.appendChild(styleEl);
+		const sheet = new CSSStyleSheet();
+		sheet.replaceSync(`/* INJECTED_CSS */`);
+		shadowRoot.adoptedStyleSheets = [sheet];
 		await new Promise((resolve) => setTimeout(resolve, 0));
 		this.shadowElRect = this.shadowEl.getBoundingClientRect();
 	}
