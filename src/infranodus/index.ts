@@ -554,9 +554,9 @@ class InfraNodus {
 				: topics
 						.map(
 							(topic: any) =>
-								`"[cluster ${topic.id}]: ${topic.words
-									.slice(0, 9)
-									.join(", ")}"`
+								`"[cluster ${topic.id}]: ${
+									topic.aiName ? topic.aiName + " — " : ""
+								}${topic.words.slice(0, 9).join(", ")}"`
 						)
 						.join(" and ");
 
@@ -593,9 +593,9 @@ class InfraNodus {
 		const conceptsInTopics = topics
 			.map(
 				(topic: any) =>
-					`{topic: ${topic.id}, concepts: "${topic.words
-						.slice(0, 9)
-						.join(", ")}"}`
+					`{topic: ${topic.id}${
+						topic.aiName ? `, name: "${topic.aiName}"` : ""
+					}, concepts: "${topic.words.slice(0, 9).join(", ")}"}`
 			)
 			.join(" | ");
 
@@ -648,7 +648,9 @@ class InfraNodus {
 				return (
 					"[cluster " +
 					topic.id +
-					']:"\n' +
+					"]" +
+					(topic.aiName ? ' "' + topic.aiName + '"' : "") +
+					':"\n' +
 					topic.words.slice(0, 9).join(", ") +
 					'":\n ' +
 					statements.join(" ") +
@@ -818,6 +820,7 @@ class InfraNodus {
 		type?: string;
 		source?: string;
 		modal?: string;
+		requestMode?: string;
 	}) {
 		if (!params.language) params.language = "en";
 
@@ -831,7 +834,7 @@ class InfraNodus {
 			chatPrompt.push({ role: "user", content: simplePrompt });
 		}
 		// console.log("Generate advice with", SETTINGS.AI_MODEL);
-		return await this.genericPost("api/v1/aiAdvice", {
+		const body: any = {
 			mode: infraNodusInquiryMode ?? "",
 			type: params.type ?? "",
 			prompt: chatPrompt.length > 0 ? chatPrompt : simplePrompt,
@@ -843,7 +846,9 @@ class InfraNodus {
 			app: "obsidian_plugin",
 			source: params.source ?? "",
 			modal: params.modal ?? "",
-		});
+		};
+		if (params.requestMode) body.requestMode = params.requestMode;
+		return await this.genericPost("api/v1/aiAdvice", body);
 	}
 
 	// public static async generateTopics(text: string) {
