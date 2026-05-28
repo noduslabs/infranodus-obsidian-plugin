@@ -730,6 +730,7 @@ const GraphView = (params: {
 						switch (meta.action) {
 							case "question":
 							case "develop":
+							case "transcend":
 								setAdviceMode("none");
 								setTimeout(() => {
 									setAdviceMode(meta.action);
@@ -777,6 +778,13 @@ const GraphView = (params: {
 								setAdviceMode("none");
 								setTimeout(() => {
 									setAdviceMode("develop");
+								}, 100);
+
+								break;
+							case "transcend":
+								setAdviceMode("none");
+								setTimeout(() => {
+									setAdviceMode("transcend");
 								}, 100);
 
 								break;

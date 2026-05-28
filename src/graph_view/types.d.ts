@@ -9,6 +9,7 @@ import * as React from "react";
 type AdviceMode =
 	| "question"
 	| "develop"
+	| "transcend"
 	| "summary"
 	| "context"
 	| "context_gap"

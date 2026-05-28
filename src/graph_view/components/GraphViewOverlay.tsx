@@ -516,6 +516,7 @@ const GraphViewOverlay = (params: {
 										"summary",
 										"question",
 										"develop",
+										"transcend",
 									].includes(adviceMode) && (
 										<span>to chat</span>
 									)}
@@ -572,7 +573,8 @@ const GraphViewOverlay = (params: {
 
 						{/* Transcend this context */}
 						{(adviceMode == "question" ||
-							adviceMode == "develop") && (
+							adviceMode == "develop" ||
+							adviceMode == "transcend") && (
 							<div className="flex flex-row items-center gap-2 p-2 border-t-[1px] border-solid border-transparent border-t-black">
 								<InfoTooltip text="Generate ideas beyond the context of this graph">
 									<ToggleButton

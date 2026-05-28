@@ -31,7 +31,10 @@ function getTopicsForAdviceMode(params: {
 				topicsFiltered.includes(topic.id)
 			);
 		}
-	} else if (params.adviceMode === "develop") {
+	} else if (
+		params.adviceMode === "develop" ||
+		params.adviceMode === "transcend"
+	) {
 		if (topicsFiltered.length == 0) {
 			return genericTopics(wordsToSearch);
 		} else if (topicsFiltered.length > 0) {
@@ -140,6 +143,9 @@ async function generateAiAdvice(params: {
 	if (aiAdviceMode == "develop")
 		params.setTextToShow("ai generating idea...");
 
+	if (aiAdviceMode == "transcend")
+		params.setTextToShow("ai generating idea beyond the discourse...");
+
 	if (aiAdviceMode == "question")
 		params.setTextToShow("ai generating question...");
 
@@ -154,6 +160,7 @@ async function generateAiAdvice(params: {
 		language: "USER",
 		source: aiAdviceMode,
 		modal: params.modal,
+		requestMode: aiAdviceMode == "transcend" ? "transcend" : undefined,
 	};
 
 	// console.log("adviceParameters", adviceParameters);
