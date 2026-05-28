@@ -77,6 +77,7 @@ export class InfraNodusGraphView extends ItemView {
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
 				if (currentPlatform === "mobile") return;
+				if (SETTINGS.RELOADING_GRAPH === "manual") return;
 
 				this.app.workspace.iterateAllLeaves((leaf) => {
 					if (!(leaf.view instanceof InfraNodusGraphView)) return;
