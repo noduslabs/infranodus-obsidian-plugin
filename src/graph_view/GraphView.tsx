@@ -133,6 +133,10 @@ const GraphView = (params: {
 	const statementsRef = useRef<string[]>([]);
 	const loadedIframeRef = useRef(false);
 	const iframIsReadyRef = useRef(false);
+	// Last payloads sent to the iframe, so the graph can be restored if the
+	// iframe reboots (a READY arriving after the data was already sent)
+	const lastLoadPayloadRef = useRef<any>(null);
+	const lastAiTopicsRef = useRef<any>(null);
 	const filteredStatementsRef = useRef<StatementsObject[]>([]);
 	const extractedGraphDataRef = useRef<InfraNodusExtractedGraphData>();
 	const lastSelectedWordRef = useRef<string | null>(
@@ -488,11 +492,17 @@ const GraphView = (params: {
 				// 	infraNodusAnswer: graphData,
 				// 	topicNames,
 				// });
-				sendDataToIframe("LOAD_JSON", {
+				const loadPayload = {
 					entriesAndGraphOfContext:
 						graphData?.entriesAndGraphOfContext,
 					topicNames,
-				});
+				};
+				lastLoadPayloadRef.current = loadPayload;
+				let loadSent = sendDataToIframe("LOAD_JSON", loadPayload);
+				for (let attempt = 0; attempt < 10 && !loadSent; attempt++) {
+					await new Promise((resolve) => setTimeout(resolve, 200));
+					loadSent = sendDataToIframe("LOAD_JSON", loadPayload);
+				}
 				loadedIframeRef.current = true;
 				// console.log("[time] waiting load and sending", diff(start3));
 
@@ -521,6 +531,11 @@ const GraphView = (params: {
 				// 	wordsToHide
 				// );
 
+				lastLoadPayloadRef.current = {
+					...(lastLoadPayloadRef.current || {}),
+					entriesAndGraphOfContext:
+						graphData?.entriesAndGraphOfContext,
+				};
 				sendDataToIframe("RECALCULATION", {
 					entriesAndGraphOfContext:
 						graphData?.entriesAndGraphOfContext,
@@ -552,6 +567,7 @@ const GraphView = (params: {
 					top_statements:
 						extractedGraphDataRef.current?.top_statements,
 				});
+				lastAiTopicsRef.current = aiTopics;
 				sendDataToIframe(EventTypes.TOPICS_UPDATE, aiTopics);
 				// console.log("AI Topics", aiTopics);
 
@@ -634,6 +650,37 @@ const GraphView = (params: {
 			switch (type) {
 				case EventTypes.READY:
 					iframIsReadyRef.current = true;
+					// Self-healing: a READY arriving after the graph data was
+					// already sent means the iframe rebooted (or missed the
+					// payload) — re-send it, or it stays blank until a manual
+					// reload
+					if (loadedIframeRef.current && lastLoadPayloadRef.current) {
+						console.log(
+							"InfraNodus: iframe issued READY after load — re-sending graph data"
+						);
+						sendDataToIframe(
+							"LOAD_JSON",
+							lastLoadPayloadRef.current
+						);
+						await new Promise((resolve) =>
+							setTimeout(resolve, 250)
+						);
+						if (wordsToSearch.length > 0)
+							sendDataToIframe(
+								EventTypes.SELECTED_NODES,
+								wordsToSearch
+							);
+						if (wordsToHide.length > 0)
+							sendDataToIframe(
+								EventTypes.REMOVED_NODES,
+								wordsToHide
+							);
+						if (lastAiTopicsRef.current)
+							sendDataToIframe(
+								EventTypes.TOPICS_UPDATE,
+								lastAiTopicsRef.current
+							);
+					}
 					break;
 				case EventTypes.SELECTED_NODES:
 					if (!payload) payload = [];
@@ -1044,10 +1091,16 @@ const GraphView = (params: {
 
 	function sendDataToIframe(type: string, payload: any) {
 		// console.log("InfraNodus Sending data to iframe", type, payload);
-		graph_iframe.current?.contentWindow?.postMessage(
-			{ type, payload },
-			"*"
-		);
+		const iframeWindow = graph_iframe.current?.contentWindow;
+		if (!iframeWindow) {
+			console.log(
+				"InfraNodus: cannot send to iframe, it is not mounted",
+				type
+			);
+			return false;
+		}
+		iframeWindow.postMessage({ type, payload }, "*");
+		return true;
 	}
 
 	const graphHeight = getGraphHeight({

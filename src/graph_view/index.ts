@@ -177,6 +177,11 @@ export class InfraNodusGraphView extends ItemView {
 	private isReloadingGraph = false;
 	private lastReloadFilePath = "";
 
+	// Serializes reloadGraph calls: two overlapping reloads (e.g. a
+	// layout-change and a mode-change firing together) would otherwise both
+	// unmount and createRoot on the same element, leaving a blank pane
+	private reloadQueue: Promise<void> = Promise.resolve();
+
 	// Variable used in src/main.ts > onload() > observerElementVisibility
 	// Used to reload the graph when the side view is made visible, from invisible
 	public lastFilePathWhileHidden: string | null = null;
@@ -190,6 +195,15 @@ export class InfraNodusGraphView extends ItemView {
 		},
 		forceReload = true
 	) {
+		this.reloadQueue = this.reloadQueue.then(() =>
+			this._reloadGraph(params, forceReload).catch((err) =>
+				console.error("InfraNodus: error reloading graph", err)
+			)
+		);
+		return this.reloadQueue;
+	}
+
+	private async _reloadGraph(params: ReloadGraphParams, forceReload = true) {
 		if (!this.workspaceLayoutReady) return;
 		this.contentString = params.contentString || "";
 		this.sourcePath = params.sourcePath || "";
