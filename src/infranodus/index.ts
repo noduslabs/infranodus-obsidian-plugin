@@ -13,6 +13,7 @@ import { AdviceMode } from "src/graph_view/types";
 import { replaceAtWithBrackets } from "src/utils/statements";
 
 import { PossibleError } from "src/graph_view/components/ErrorHandler";
+import { INFRANODUS_API_ERROR_PREFIX } from "src/graph_view/lib/handleErrors";
 import { GraphPanel } from "src/graph_view/types";
 
 const MAX_CONTEXT_SIZE = 54000;
@@ -231,7 +232,7 @@ class InfraNodus {
 			!params.graph_data.entriesAndGraphOfContext
 		) {
 			// Show the actual error reported by the API
-			throw new Error(error);
+			throw new Error(INFRANODUS_API_ERROR_PREFIX + error);
 		} else if (!params.graph_data.entriesAndGraphOfContext) {
 			throw new Error(
 				"Could not parse the response from InfraNodus topics identifier. Please, check if there is any content on this page, check your text processing settings, and make sure your API key is up to date."

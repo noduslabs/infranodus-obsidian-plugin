@@ -46,7 +46,10 @@ import {
 	CheckIcon,
 	CrossReferenceIcon,
 } from "@primer/octicons-react";
-import { handleGraphDataError } from "./lib/handleErrors";
+import {
+	handleGraphDataError,
+	INFRANODUS_API_ERROR_PREFIX,
+} from "./lib/handleErrors";
 import { LoadingView } from "./components/LoadingView";
 import { clearInterval } from "timers";
 
@@ -572,7 +575,14 @@ const GraphView = (params: {
 			setError((currentError) => {
 				if (currentError) return currentError;
 
-				setErrorText(err.message || "An unknown error occurred");
+				const message = err.message || "An unknown error occurred";
+				if (message.startsWith(INFRANODUS_API_ERROR_PREFIX)) {
+					setErrorText(
+						message.slice(INFRANODUS_API_ERROR_PREFIX.length)
+					);
+					return "api-error";
+				}
+				setErrorText(message);
 				return "generic-error";
 			});
 		});

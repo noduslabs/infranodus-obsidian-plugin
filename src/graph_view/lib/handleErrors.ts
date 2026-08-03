@@ -1,6 +1,10 @@
 import { PluginSettings, SETTINGS } from "src/settings";
 import { PossibleError } from "../components/ErrorHandler";
 
+// Marks error messages that come from the InfraNodus API verbatim, so the
+// catch handler in GraphView can show them with the "api-error" view
+const INFRANODUS_API_ERROR_PREFIX = "INFRANODUS_API_ERROR: ";
+
 function handleGraphDataError(params: {
 	graphDataResponse: any;
 	statements: string[];
@@ -68,7 +72,7 @@ function handleGraphDataError(params: {
 
 	// Any other error reported by the API: surface its message as is,
 	// instead of letting it fall through to a generic parse error.
-	// No setError here — the fetchGraphData catch sets "generic-error"
+	// No setError here — the fetchGraphData catch sets "api-error"
 	// with this message as the errorText
 	const apiErrorMessage =
 		params.graphDataResponse.errormsg || params.graphDataResponse.error;
@@ -76,7 +80,7 @@ function handleGraphDataError(params: {
 		console.log(
 			"[handleGraphDataError] Unrecognized API error, surfacing it"
 		);
-		throw new Error(apiErrorMessage);
+		throw new Error(INFRANODUS_API_ERROR_PREFIX + apiErrorMessage);
 	}
 }
 
@@ -89,4 +93,4 @@ function _checkForWikiLinks(statements: string[]) {
 	return false;
 }
 
-export { handleGraphDataError };
+export { handleGraphDataError, INFRANODUS_API_ERROR_PREFIX };
