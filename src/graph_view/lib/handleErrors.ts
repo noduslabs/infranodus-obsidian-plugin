@@ -65,6 +65,19 @@ function handleGraphDataError(params: {
 			throw new Error("No wiki links found");
 		}
 	}
+
+	// Any other error reported by the API: surface its message as is,
+	// instead of letting it fall through to a generic parse error.
+	// No setError here — the fetchGraphData catch sets "generic-error"
+	// with this message as the errorText
+	const apiErrorMessage =
+		params.graphDataResponse.errormsg || params.graphDataResponse.error;
+	if (typeof apiErrorMessage === "string" && apiErrorMessage.length > 0) {
+		console.log(
+			"[handleGraphDataError] Unrecognized API error, surfacing it"
+		);
+		throw new Error(apiErrorMessage);
+	}
 }
 
 function _checkForWikiLinks(statements: string[]) {

@@ -225,6 +225,13 @@ class InfraNodus {
 			throw new Error(
 				"Please, update your API key in the InfraNodus graph view settings."
 			);
+		} else if (
+			typeof error === "string" &&
+			error.length > 0 &&
+			!params.graph_data.entriesAndGraphOfContext
+		) {
+			// Show the actual error reported by the API
+			throw new Error(error);
 		} else if (!params.graph_data.entriesAndGraphOfContext) {
 			throw new Error(
 				"Could not parse the response from InfraNodus topics identifier. Please, check if there is any content on this page, check your text processing settings, and make sure your API key is up to date."
