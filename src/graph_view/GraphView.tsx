@@ -160,12 +160,19 @@ const GraphView = (params: {
 		graphName: SETTINGS.EXPORT_GRAPH,
 	};
 
-	const [currentUser, setCurrentUser] = useState<string>("");
+	// Seeding from the cache keeps the iframe src stable from the first
+	// render — an src change mid-load reboots the graph viewer
+	const cachedUserId = InfraNodus.getCachedUserId();
 
-	const [iframeGraphUser, setIframeGraphUser] = useState<string>("");
+	const [currentUser, setCurrentUser] = useState<string>(cachedUserId ?? "");
+
+	const [iframeGraphUser, setIframeGraphUser] = useState<string>(
+		cachedUserId ? `&user=${cachedUserId}` : ""
+	);
 
 	useEffect(() => {
 		const fetchUserId = async () => {
+			if (currentUser) return;
 			if (auth_token) {
 				try {
 					const userResponse = await InfraNodus.getUserId({

@@ -903,23 +903,64 @@ class InfraNodus {
 		}
 	}
 
-	public static async getUserId(params: { headerToken: string }) {
-		try {
-			const postResult = await this.genericPost(
-				"api/v1/userId",
-				{
-					headerToken: params.headerToken,
-				},
-				{ credentials: "include" }
-			);
+	// Cached InfraNodus user id, keyed by the API key it was fetched with —
+	// the id never changes for a given key, so one fetch per session is
+	// enough. Keeping the iframe URL stable from the first render also
+	// prevents the graph viewer from rebooting mid-load when the id arrives
+	private static userIdCache: { apiKey: string; userId: string } | null =
+		null;
+	private static userIdInFlight: {
+		apiKey: string;
+		promise: Promise<{ userId?: string; error?: boolean }>;
+	} | null = null;
 
-			console.log("postResult", postResult);
+	public static getCachedUserId(): string | null {
+		const apiKey = SETTINGS.INFRANODUS_API_KEY;
+		return apiKey && InfraNodus.userIdCache?.apiKey === apiKey
+			? InfraNodus.userIdCache.userId
+			: null;
+	}
 
-			return { userId: postResult.data.userId };
-		} catch (err) {
-			console.error("Error when submitting content to InfraNodus", err);
-			return { error: true };
+	public static async getUserId(params: {
+		headerToken: string;
+	}): Promise<{ userId?: string; error?: boolean }> {
+		const apiKey = params.headerToken;
+
+		if (InfraNodus.userIdCache?.apiKey === apiKey) {
+			return { userId: InfraNodus.userIdCache.userId };
 		}
+		if (InfraNodus.userIdInFlight?.apiKey === apiKey) {
+			return InfraNodus.userIdInFlight.promise;
+		}
+
+		const promise = (async () => {
+			try {
+				const postResult = await this.genericPost(
+					"api/v1/userId",
+					{
+						headerToken: apiKey,
+					},
+					{ credentials: "include" }
+				);
+
+				const userId = postResult.data.userId;
+				if (userId) InfraNodus.userIdCache = { apiKey, userId };
+
+				return { userId };
+			} catch (err) {
+				console.error(
+					"Error when getting the user id from InfraNodus",
+					err
+				);
+				return { error: true };
+			} finally {
+				if (InfraNodus.userIdInFlight?.apiKey === apiKey)
+					InfraNodus.userIdInFlight = null;
+			}
+		})();
+
+		InfraNodus.userIdInFlight = { apiKey, promise };
+		return promise;
 	}
 }
 
