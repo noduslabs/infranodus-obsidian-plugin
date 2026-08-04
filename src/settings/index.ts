@@ -47,7 +47,7 @@ const SETTINGS: PluginSettings = {
 	INFRANODUS_API_KEY: "",
 	AI_MODEL: "gpt-5.4",
 	SINGLE_PAGE_GRAPH_PROCESSING: "[[Wiki Links]] and Concepts",
-	MULTI_PAGE_GRAPH_PROCESSING: "[[Wiki Links]] Only",
+	MULTI_PAGE_GRAPH_PROCESSING: "[[Wiki Links]] and Concepts",
 	COLOR_SCHEME: "auto",
 	LINK_PAGE_TO_MENTIONS: "paragraph",
 	INCLUDE_LINKED_MENTIONS: "For empty pages only",

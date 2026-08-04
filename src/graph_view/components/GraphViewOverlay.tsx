@@ -46,6 +46,7 @@ import {
 } from "../lib/jumpToStatement";
 import { editStatementsOfFile } from "src/utils/editFile";
 import { addLinksToStatementsForFilePath } from "../lib/addLinksToStatement";
+import { exportGraphToInfraNodus } from "../lib/exportGraphToInfraNodus";
 
 import { InfraNodus } from "../../infranodus";
 
@@ -528,14 +529,31 @@ const GraphViewOverlay = (params: {
 								<span
 									className="flex flex-row items-center gap-1 ml-4 text-sm font-bold cursor-pointer"
 									onClick={() => {
-										goToInfraNodus({
-											textToShow,
-											contextName: filePath,
-											exportToInfraNodus,
-											adviceMode,
-											vaultName,
-											app,
-										});
+										if (adviceMode === "context") {
+											// Whole analyzed text: direct
+											// API export (URL import breaks
+											// on big texts)
+											exportGraphToInfraNodus({
+												app,
+												text: textToShow,
+												defaultGraphName:
+													encodeInfraNodusGraphName(
+														filePath || "",
+														SETTINGS.EXPORT_GRAPH,
+														vaultName
+													),
+												sourceFile: filePath,
+											});
+										} else {
+											goToInfraNodus({
+												textToShow,
+												contextName: filePath,
+												exportToInfraNodus,
+												adviceMode,
+												vaultName,
+												app,
+											});
+										}
 									}}
 								>
 									<CrossReferenceIcon size={16} />

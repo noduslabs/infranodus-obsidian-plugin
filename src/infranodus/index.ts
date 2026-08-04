@@ -13,6 +13,7 @@ import { AdviceMode } from "src/graph_view/types";
 import { replaceAtWithBrackets } from "src/utils/statements";
 
 import { PossibleError } from "src/graph_view/components/ErrorHandler";
+import { INFRANODUS_API_ERROR_PREFIX } from "src/graph_view/lib/handleErrors";
 import { GraphPanel } from "src/graph_view/types";
 
 const MAX_CONTEXT_SIZE = 54000;
@@ -225,6 +226,13 @@ class InfraNodus {
 			throw new Error(
 				"Please, update your API key in the InfraNodus graph view settings."
 			);
+		} else if (
+			typeof error === "string" &&
+			error.length > 0 &&
+			!params.graph_data.entriesAndGraphOfContext
+		) {
+			// Show the actual error reported by the API
+			throw new Error(INFRANODUS_API_ERROR_PREFIX + error);
 		} else if (!params.graph_data.entriesAndGraphOfContext) {
 			throw new Error(
 				"Could not parse the response from InfraNodus topics identifier. Please, check if there is any content on this page, check your text processing settings, and make sure your API key is up to date."
@@ -874,44 +882,105 @@ class InfraNodus {
 		contextName: string;
 		text: string;
 		tags: string[];
+		// Ask the API for topics, content gaps and a structural overview in
+		// the same request — needed when registering the exported graph in
+		// the vault's infranodus/manifest.json (no extra round-trip)
+		extendedSummary?: boolean;
 	}) {
 		try {
+			const summaryQuery = params.extendedSummary
+				? "&extendedGraphSummary=true&includeGraphSummary=true"
+				: "";
+			const body: any = {
+				name: params.contextName,
+				text: params.text,
+				categories: params.tags,
+			};
+			if (params.extendedSummary) body.aiTopics = true;
+
 			const postResult = await this.genericPost(
-				"api/v1/graphAndStatements?doNotSave=false&addStats=true",
-				{
-					name: params.contextName,
-					text: params.text,
-					categories: params.tags,
-				},
+				`api/v1/graphAndStatements?doNotSave=false&addStats=true${summaryQuery}&contextName=${encodeURIComponent(
+					params.contextName
+				)}`,
+				body,
 				{ credentials: "include" }
 			);
 
 			// console.log("infranodus post result", postResult);
 
-			return { success: true };
+			if (postResult?.data?.error) {
+				console.error(
+					"InfraNodus export returned an error",
+					postResult.data.error
+				);
+				return { error: true };
+			}
+
+			return { success: true, data: postResult?.data };
 		} catch (err) {
 			console.error("Error when submitting content to InfraNodus", err);
 			return { error: true };
 		}
 	}
 
-	public static async getUserId(params: { headerToken: string }) {
-		try {
-			const postResult = await this.genericPost(
-				"api/v1/userId",
-				{
-					headerToken: params.headerToken,
-				},
-				{ credentials: "include" }
-			);
+	// Cached InfraNodus user id, keyed by the API key it was fetched with —
+	// the id never changes for a given key, so one fetch per session is
+	// enough. Keeping the iframe URL stable from the first render also
+	// prevents the graph viewer from rebooting mid-load when the id arrives
+	private static userIdCache: { apiKey: string; userId: string } | null =
+		null;
+	private static userIdInFlight: {
+		apiKey: string;
+		promise: Promise<{ userId?: string; error?: boolean }>;
+	} | null = null;
 
-			console.log("postResult", postResult);
+	public static getCachedUserId(): string | null {
+		const apiKey = SETTINGS.INFRANODUS_API_KEY;
+		return apiKey && InfraNodus.userIdCache?.apiKey === apiKey
+			? InfraNodus.userIdCache.userId
+			: null;
+	}
 
-			return { userId: postResult.data.userId };
-		} catch (err) {
-			console.error("Error when submitting content to InfraNodus", err);
-			return { error: true };
+	public static async getUserId(params: {
+		headerToken: string;
+	}): Promise<{ userId?: string; error?: boolean }> {
+		const apiKey = params.headerToken;
+
+		if (InfraNodus.userIdCache?.apiKey === apiKey) {
+			return { userId: InfraNodus.userIdCache.userId };
 		}
+		if (InfraNodus.userIdInFlight?.apiKey === apiKey) {
+			return InfraNodus.userIdInFlight.promise;
+		}
+
+		const promise = (async () => {
+			try {
+				const postResult = await this.genericPost(
+					"api/v1/userId",
+					{
+						headerToken: apiKey,
+					},
+					{ credentials: "include" }
+				);
+
+				const userId = postResult.data.userId;
+				if (userId) InfraNodus.userIdCache = { apiKey, userId };
+
+				return { userId };
+			} catch (err) {
+				console.error(
+					"Error when getting the user id from InfraNodus",
+					err
+				);
+				return { error: true };
+			} finally {
+				if (InfraNodus.userIdInFlight?.apiKey === apiKey)
+					InfraNodus.userIdInFlight = null;
+			}
+		})();
+
+		InfraNodus.userIdInFlight = { apiKey, promise };
+		return promise;
 	}
 }
 

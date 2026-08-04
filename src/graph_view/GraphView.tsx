@@ -34,6 +34,7 @@ import {
 } from "./lib/jumpToStatement";
 import { INTERNAL_SETTINGS, SETTINGS } from "src/settings";
 import { generateTextForContext } from "./lib/generateTextForContext";
+import { exportGraphToInfraNodus } from "./lib/exportGraphToInfraNodus";
 import { unObserveElementAttributes } from "src/utils/observer";
 import { GraphViewOverlaySettings } from "./components/GraphViewOverlaySettings";
 import { InfoTooltip } from "src/components/InfoTootip";
@@ -46,7 +47,10 @@ import {
 	CheckIcon,
 	CrossReferenceIcon,
 } from "@primer/octicons-react";
-import { handleGraphDataError } from "./lib/handleErrors";
+import {
+	handleGraphDataError,
+	INFRANODUS_API_ERROR_PREFIX,
+} from "./lib/handleErrors";
 import { LoadingView } from "./components/LoadingView";
 import { clearInterval } from "timers";
 
@@ -56,7 +60,6 @@ import { TopicsObject } from "src/types/general";
 
 import { jwtDecode } from "jwt-decode";
 
-import { GraphNameModal } from "../components/GraphNameModal";
 
 import { GraphPanel } from "./types";
 
@@ -130,6 +133,10 @@ const GraphView = (params: {
 	const statementsRef = useRef<string[]>([]);
 	const loadedIframeRef = useRef(false);
 	const iframIsReadyRef = useRef(false);
+	// Last payloads sent to the iframe, so the graph can be restored if the
+	// iframe reboots (a READY arriving after the data was already sent)
+	const lastLoadPayloadRef = useRef<any>(null);
+	const lastAiTopicsRef = useRef<any>(null);
 	const filteredStatementsRef = useRef<StatementsObject[]>([]);
 	const extractedGraphDataRef = useRef<InfraNodusExtractedGraphData>();
 	const lastSelectedWordRef = useRef<string | null>(
@@ -148,17 +155,19 @@ const GraphView = (params: {
 
 	const auth_token = SETTINGS.INFRANODUS_API_KEY;
 
-	const exportToInfraNodus = {
-		type: SETTINGS.EXPORT_TYPE,
-		graphName: SETTINGS.EXPORT_GRAPH,
-	};
+	// Seeding from the cache keeps the iframe src stable from the first
+	// render — an src change mid-load reboots the graph viewer
+	const cachedUserId = InfraNodus.getCachedUserId();
 
-	const [currentUser, setCurrentUser] = useState<string>("");
+	const [currentUser, setCurrentUser] = useState<string>(cachedUserId ?? "");
 
-	const [iframeGraphUser, setIframeGraphUser] = useState<string>("");
+	const [iframeGraphUser, setIframeGraphUser] = useState<string>(
+		cachedUserId ? `&user=${cachedUserId}` : ""
+	);
 
 	useEffect(() => {
 		const fetchUserId = async () => {
+			if (currentUser) return;
 			if (auth_token) {
 				try {
 					const userResponse = await InfraNodus.getUserId({
@@ -485,11 +494,17 @@ const GraphView = (params: {
 				// 	infraNodusAnswer: graphData,
 				// 	topicNames,
 				// });
-				sendDataToIframe("LOAD_JSON", {
+				const loadPayload = {
 					entriesAndGraphOfContext:
 						graphData?.entriesAndGraphOfContext,
 					topicNames,
-				});
+				};
+				lastLoadPayloadRef.current = loadPayload;
+				let loadSent = sendDataToIframe("LOAD_JSON", loadPayload);
+				for (let attempt = 0; attempt < 10 && !loadSent; attempt++) {
+					await new Promise((resolve) => setTimeout(resolve, 200));
+					loadSent = sendDataToIframe("LOAD_JSON", loadPayload);
+				}
 				loadedIframeRef.current = true;
 				// console.log("[time] waiting load and sending", diff(start3));
 
@@ -518,6 +533,11 @@ const GraphView = (params: {
 				// 	wordsToHide
 				// );
 
+				lastLoadPayloadRef.current = {
+					...(lastLoadPayloadRef.current || {}),
+					entriesAndGraphOfContext:
+						graphData?.entriesAndGraphOfContext,
+				};
 				sendDataToIframe("RECALCULATION", {
 					entriesAndGraphOfContext:
 						graphData?.entriesAndGraphOfContext,
@@ -549,6 +569,7 @@ const GraphView = (params: {
 					top_statements:
 						extractedGraphDataRef.current?.top_statements,
 				});
+				lastAiTopicsRef.current = aiTopics;
 				sendDataToIframe(EventTypes.TOPICS_UPDATE, aiTopics);
 				// console.log("AI Topics", aiTopics);
 
@@ -572,7 +593,14 @@ const GraphView = (params: {
 			setError((currentError) => {
 				if (currentError) return currentError;
 
-				setErrorText(err.message || "An unknown error occurred");
+				const message = err.message || "An unknown error occurred";
+				if (message.startsWith(INFRANODUS_API_ERROR_PREFIX)) {
+					setErrorText(
+						message.slice(INFRANODUS_API_ERROR_PREFIX.length)
+					);
+					return "api-error";
+				}
+				setErrorText(message);
 				return "generic-error";
 			});
 		});
@@ -624,6 +652,37 @@ const GraphView = (params: {
 			switch (type) {
 				case EventTypes.READY:
 					iframIsReadyRef.current = true;
+					// Self-healing: a READY arriving after the graph data was
+					// already sent means the iframe rebooted (or missed the
+					// payload) — re-send it, or it stays blank until a manual
+					// reload
+					if (loadedIframeRef.current && lastLoadPayloadRef.current) {
+						console.log(
+							"InfraNodus: iframe issued READY after load — re-sending graph data"
+						);
+						sendDataToIframe(
+							"LOAD_JSON",
+							lastLoadPayloadRef.current
+						);
+						await new Promise((resolve) =>
+							setTimeout(resolve, 250)
+						);
+						if (wordsToSearch.length > 0)
+							sendDataToIframe(
+								EventTypes.SELECTED_NODES,
+								wordsToSearch
+							);
+						if (wordsToHide.length > 0)
+							sendDataToIframe(
+								EventTypes.REMOVED_NODES,
+								wordsToHide
+							);
+						if (lastAiTopicsRef.current)
+							sendDataToIframe(
+								EventTypes.TOPICS_UPDATE,
+								lastAiTopicsRef.current
+							);
+					}
 					break;
 				case EventTypes.SELECTED_NODES:
 					if (!payload) payload = [];
@@ -1034,10 +1093,16 @@ const GraphView = (params: {
 
 	function sendDataToIframe(type: string, payload: any) {
 		// console.log("InfraNodus Sending data to iframe", type, payload);
-		graph_iframe.current?.contentWindow?.postMessage(
-			{ type, payload },
-			"*"
-		);
+		const iframeWindow = graph_iframe.current?.contentWindow;
+		if (!iframeWindow) {
+			console.log(
+				"InfraNodus: cannot send to iframe, it is not mounted",
+				type
+			);
+			return false;
+		}
+		iframeWindow.postMessage({ type, payload }, "*");
+		return true;
 	}
 
 	const graphHeight = getGraphHeight({
@@ -1131,11 +1196,16 @@ const GraphView = (params: {
 										.map((statement) => statement.content)
 										.join("\n");
 
-									goToInfraNodus({
-										textToShow: contentToCopy,
-										contextName: filePath,
-										exportToInfraNodus,
-										vaultName,
+									exportGraphToInfraNodus({
+										app,
+										text: contentToCopy,
+										defaultGraphName:
+											encodeInfraNodusGraphName(
+												filePath || "",
+												SETTINGS.EXPORT_GRAPH,
+												vaultName
+											),
+										sourceFile: filePath,
 									});
 
 									setTimeout(
@@ -1377,60 +1447,4 @@ function convertGraphToText(params: {
 			.join(", ");
 	}
 	return graphText;
-}
-
-async function goToInfraNodus({
-	textToShow = "",
-	contextName = "",
-	exportToInfraNodus = { type: "manual", graphName: "" },
-	vaultName = "",
-}) {
-	if (!textToShow || textToShow === "ai generating...") {
-		// console.log("no data to send to InfraNodus");
-		return;
-	}
-
-	const encodedText = encodeURIComponent(textToShow);
-	const encodedContext = encodeInfraNodusGraphName(
-		contextName,
-		SETTINGS.EXPORT_GRAPH,
-		vaultName
-	);
-
-	const linkToOpen = `${SETTINGS.INFRANODUS_API_URL}/import/editor?text=${encodedText}&context=${encodedContext}`;
-
-	if (exportToInfraNodus && exportToInfraNodus.type === "auto") {
-		// Change the context name to just be the page title?
-		const graphTags = [`context: ${encodedContext}`];
-		let graphName = encodedContext;
-
-		// Show dialog to confirm/edit graph name
-		graphName =
-			(await new Promise<string | null>((resolve) => {
-				new GraphNameModal(app, graphName, resolve).open();
-			})) || "";
-
-		if (!graphName) {
-			return;
-		}
-
-		const dataToSave = {
-			contextName: graphName,
-			text: textToShow,
-			tags: graphTags,
-		};
-
-		const exportStatus = await InfraNodus.exportText(dataToSave);
-
-		// console.log("InfraNodus export status", exportStatus);
-		if (exportStatus.error) {
-			alert(
-				`There was an error saving to the ${graphName} graph in InfraNodus. Reload the page and try again or change your extension setting.`
-			);
-		} else {
-			alert(`Saved to the ${graphName} graph in InfraNodus`);
-		}
-	} else {
-		window.open(linkToOpen, "_blank");
-	}
 }

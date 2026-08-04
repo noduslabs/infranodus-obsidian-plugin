@@ -8,6 +8,7 @@ type PossibleError =
 	| "api-key-free-exceeded"
 	| "api-key-paid-exceeded"
 	| "generic-error"
+	| "api-error"
 	| "no-content"
 	| "content-empty";
 
@@ -266,6 +267,37 @@ const ErrorHandler = (params: {
 									/>
 								</>
 							)}
+					</>
+				)}
+
+				{params.error === "api-error" && (
+					<>
+						<h2>Ooops, there was an error...</h2>
+						<p>
+							{typeof params.errorText === "string" &&
+							params.errorText.length > 0
+								? params.errorText
+								: "An unknown error occured. Please try again later or with another page."}
+						</p>
+						<p>
+							In many cases this can be resolved by generating a
+							fresh
+							<ActionLink
+								text="InfraNodus API key"
+								href={
+									SETTINGS.INFRANODUS_API_URL +
+									"/api-access?utm_source=obsidian_plugin_rate_limit"
+								}
+								addSpacesAround={true}
+							/>{" "}
+							from an active account and then adding it to your{" "}
+							<ActionLink
+								text="plugin settings"
+								action={() => ctx.setShowingSettings(true)}
+								addSpaceLeft={true}
+							/>
+							{"."}
+						</p>
 					</>
 				)}
 			</span>
