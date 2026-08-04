@@ -34,6 +34,7 @@ import {
 } from "./lib/jumpToStatement";
 import { INTERNAL_SETTINGS, SETTINGS } from "src/settings";
 import { generateTextForContext } from "./lib/generateTextForContext";
+import { exportGraphToInfraNodus } from "./lib/exportGraphToInfraNodus";
 import { unObserveElementAttributes } from "src/utils/observer";
 import { GraphViewOverlaySettings } from "./components/GraphViewOverlaySettings";
 import { InfoTooltip } from "src/components/InfoTootip";
@@ -59,7 +60,6 @@ import { TopicsObject } from "src/types/general";
 
 import { jwtDecode } from "jwt-decode";
 
-import { GraphNameModal } from "../components/GraphNameModal";
 
 import { GraphPanel } from "./types";
 
@@ -154,11 +154,6 @@ const GraphView = (params: {
 	);
 
 	const auth_token = SETTINGS.INFRANODUS_API_KEY;
-
-	const exportToInfraNodus = {
-		type: SETTINGS.EXPORT_TYPE,
-		graphName: SETTINGS.EXPORT_GRAPH,
-	};
 
 	// Seeding from the cache keeps the iframe src stable from the first
 	// render — an src change mid-load reboots the graph viewer
@@ -1201,11 +1196,16 @@ const GraphView = (params: {
 										.map((statement) => statement.content)
 										.join("\n");
 
-									goToInfraNodus({
-										textToShow: contentToCopy,
-										contextName: filePath,
-										exportToInfraNodus,
-										vaultName,
+									exportGraphToInfraNodus({
+										app,
+										text: contentToCopy,
+										defaultGraphName:
+											encodeInfraNodusGraphName(
+												filePath || "",
+												SETTINGS.EXPORT_GRAPH,
+												vaultName
+											),
+										sourceFile: filePath,
 									});
 
 									setTimeout(
@@ -1447,60 +1447,4 @@ function convertGraphToText(params: {
 			.join(", ");
 	}
 	return graphText;
-}
-
-async function goToInfraNodus({
-	textToShow = "",
-	contextName = "",
-	exportToInfraNodus = { type: "manual", graphName: "" },
-	vaultName = "",
-}) {
-	if (!textToShow || textToShow === "ai generating...") {
-		// console.log("no data to send to InfraNodus");
-		return;
-	}
-
-	const encodedText = encodeURIComponent(textToShow);
-	const encodedContext = encodeInfraNodusGraphName(
-		contextName,
-		SETTINGS.EXPORT_GRAPH,
-		vaultName
-	);
-
-	const linkToOpen = `${SETTINGS.INFRANODUS_API_URL}/import/editor?text=${encodedText}&context=${encodedContext}`;
-
-	if (exportToInfraNodus && exportToInfraNodus.type === "auto") {
-		// Change the context name to just be the page title?
-		const graphTags = [`context: ${encodedContext}`];
-		let graphName = encodedContext;
-
-		// Show dialog to confirm/edit graph name
-		graphName =
-			(await new Promise<string | null>((resolve) => {
-				new GraphNameModal(app, graphName, resolve).open();
-			})) || "";
-
-		if (!graphName) {
-			return;
-		}
-
-		const dataToSave = {
-			contextName: graphName,
-			text: textToShow,
-			tags: graphTags,
-		};
-
-		const exportStatus = await InfraNodus.exportText(dataToSave);
-
-		// console.log("InfraNodus export status", exportStatus);
-		if (exportStatus.error) {
-			alert(
-				`There was an error saving to the ${graphName} graph in InfraNodus. Reload the page and try again or change your extension setting.`
-			);
-		} else {
-			alert(`Saved to the ${graphName} graph in InfraNodus`);
-		}
-	} else {
-		window.open(linkToOpen, "_blank");
-	}
 }

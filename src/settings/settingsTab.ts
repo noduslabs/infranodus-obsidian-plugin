@@ -234,7 +234,7 @@ class InfraNodusSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Export type")
 			.setDesc(
-				"Use manual export for more control. Automatic export works with big files."
+				"Applies to AI insight clips. Full graph / analyzed text exports always save directly via the API (works with big files)."
 			)
 			.addDropdown((dropdown) => {
 				const key = "EXPORT_TYPE";

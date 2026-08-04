@@ -882,21 +882,41 @@ class InfraNodus {
 		contextName: string;
 		text: string;
 		tags: string[];
+		// Ask the API for topics, content gaps and a structural overview in
+		// the same request — needed when registering the exported graph in
+		// the vault's infranodus/manifest.json (no extra round-trip)
+		extendedSummary?: boolean;
 	}) {
 		try {
+			const summaryQuery = params.extendedSummary
+				? "&extendedGraphSummary=true&includeGraphSummary=true"
+				: "";
+			const body: any = {
+				name: params.contextName,
+				text: params.text,
+				categories: params.tags,
+			};
+			if (params.extendedSummary) body.aiTopics = true;
+
 			const postResult = await this.genericPost(
-				"api/v1/graphAndStatements?doNotSave=false&addStats=true",
-				{
-					name: params.contextName,
-					text: params.text,
-					categories: params.tags,
-				},
+				`api/v1/graphAndStatements?doNotSave=false&addStats=true${summaryQuery}&contextName=${encodeURIComponent(
+					params.contextName
+				)}`,
+				body,
 				{ credentials: "include" }
 			);
 
 			// console.log("infranodus post result", postResult);
 
-			return { success: true };
+			if (postResult?.data?.error) {
+				console.error(
+					"InfraNodus export returned an error",
+					postResult.data.error
+				);
+				return { error: true };
+			}
+
+			return { success: true, data: postResult?.data };
 		} catch (err) {
 			console.error("Error when submitting content to InfraNodus", err);
 			return { error: true };
